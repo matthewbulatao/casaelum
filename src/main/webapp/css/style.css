@@ -1,0 +1,118 @@
+.mar-t-20 { margin-top: 20px; }
+.mar-t-50 { margin-top: 50px; }
+.mar-t-100 { margin-top: 100px; }
+.mar-l-20 { margin-left: 20px; }
+.mar-l-5 { margin-left: 5px; }
+.mar-l-10 { margin-left: 10px; }
+.mar-l-60 { margin-left: 60px; }
+.mar-r-5 { margin-right: 5px; }
+.mar-r-12 { margin-right: 12px; }
+.mar-r-15 { margin-right: 15px; }
+.mar-r-20 { margin-right: 20px; }
+.mar-b-20 { margin-bottom: 20px; }
+.pad-b-30 { padding-bottom: 30px !important; }
+.pad-r-10 { padding-right: 10px !important; }
+.pad-lr-20 { padding-left: 20px !important; padding-right: 20px !important; }
+
+.wid-30 { width: 30%; }
+.wid-70 { width: 70%; }
+.wid-80 { width: 80%; }
+.wid-100 { width: 100%; }
+
+.invisible {
+    display: none;
+}
+
+.checkin-panel {
+    background: #fff;
+    background: rgba(255,255,255,0.9);
+    white-space: nowrap;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.checkin-panel-booking {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.generic-panel {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.bc-separator {
+    font-size: 8pt;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.badge {
+    border: 1px solid #000;
+}
+
+.booking-summary-header {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.booking-summary-field {
+    font-style: italic;
+    color: rgb(29, 117, 175);
+}
+
+#bookingRefNumber {
+    color: blue;
+    font-weight: bolder;
+    font-size: 20pt;    
+}
+
+#bookingStatus {
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+#bookingTotal {
+	margin-right: 5px;
+}
+
+#myCarousel {
+	width: 60%;	
+}
+
+.booking-tab-active {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.big-checkbox {
+	width: 20px;
+	height: 20px;
+	margin-top: 2px;
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .fa {
+  position: absolute;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* align icon */
+.left-addon .fa  { left:  0px;}
+.right-addon .fa { right: 15px;}
+.right-addon .fa-second { right: 35px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
