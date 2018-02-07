@@ -1,4 +1,4 @@
-INSERT INTO APPLICATION_PROPERTIES(max_children_per_booking,max_adult_per_booking,entrance_fee_child,entrance_fee_adult) VALUES(10,10,150,300);
+INSERT INTO APPLICATION_PROPERTIES(max_children_per_booking,max_adult_per_booking,entrance_fee_child,entrance_fee_adult,down_payment_percentage) VALUES(10,10,150,300,20);
 
 INSERT INTO ROOM(name,type,code,capacity,rate,status) VALUES('Cabana','STANDARD','2STA1',2,500.00,'A');
 INSERT INTO ROOM(name,type,code,capacity,rate,status) VALUES('Kalayaan','DELUXE','5DEL1',5,1500.00,'A');

@@ -20,6 +20,7 @@ public class ApplicationProperties implements Serializable {
 	private int maxChildrenPerBooking;
 	private double entranceFeeAdult;
 	private double entranceFeeChild;
+	private int downPaymentPercentage;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date changeDate;
 	
@@ -59,11 +60,17 @@ public class ApplicationProperties implements Serializable {
 	public void setChangeDate(Date changeDate) {
 		this.changeDate = changeDate;
 	}
-	
+	public int getDownPaymentPercentage() {
+		return downPaymentPercentage;
+	}
+	public void setDownPaymentPercentage(int downPaymentPercentage) {
+		this.downPaymentPercentage = downPaymentPercentage;
+	}
 	@Override
 	public String toString() {
 		return "ApplicationProperties [id=" + id + ", maxAdultPerBooking=" + maxAdultPerBooking
 				+ ", maxChildrenPerBooking=" + maxChildrenPerBooking + ", entranceFeeAdult=" + entranceFeeAdult
-				+ ", entranceFeeChild=" + entranceFeeChild + ", changeDate=" + changeDate + "]";
-	}
+				+ ", entranceFeeChild=" + entranceFeeChild + ", downPaymentPercentage=" + downPaymentPercentage
+				+ ", changeDate=" + changeDate + "]";
+	}	
 }

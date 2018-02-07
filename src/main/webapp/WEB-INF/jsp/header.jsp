@@ -29,14 +29,14 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse hidden-print" id="navbarResponsive">
           <ul class="navbar-nav ml-auto" id="mainMenuNav">
             <li class="nav-item <c:if test="${CURRENT_MODULE == null || CURRENT_MODULE == ''}">active</c:if>">
               <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'booking'}">active</c:if>">
+            <%-- <li class="nav-item <c:if test="${CURRENT_MODULE == 'booking'}">active</c:if>">
               <a class="nav-link" href="booking-step1">Accommodation</a>
-            </li>
+            </li> --%>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'rates'}">active</c:if>">
               <a class="nav-link" href="rates">Rates</a>
             </li>

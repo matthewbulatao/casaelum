@@ -4,27 +4,31 @@
   <div class="container checkin-panel-booking <c:if test="${CURRENT_SUBMODULE == 'step3'}">invisible</c:if>">
     <form class="row">            
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-        <input type="text" class="form-control datepicker" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" />              
+        <!-- <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i> -->
+        <label class="control-label">Check-In (<fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkIn}"/>)</label>
+        <%-- <input type="text" class="form-control datepicker disabled" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" disabled="disabled"/> --%>              
       </div>   
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i>
-        <input type="text" class="form-control datepicker" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" />              
+        <!-- <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i> -->
+        <label class="control-label">Check-Out (<fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkOut}"/>)</label>
+        <%-- <input type="text" class="form-control datepicker disabled" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" disabled="disabled"/> --%>               
       </div>         
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>
-        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Adult"></i>
-        <input type="text" class="form-control input-numeric" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" />              
+        <!-- <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>
+        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Adult"></i> -->
+        <label class="control-label">Adult Count (${sessionScope.reservationDraft.countAdult})</label>
+        <%-- <input type="text" class="form-control input-numeric disabled" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" disabled="disabled"/> --%>               
       </div>
       <div class="col-md-3 inner-addon right-addon">
-        <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Children"></i>
-        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Children"></i>
-        <input type="text" class="form-control input-numeric" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" />              
+        <!-- <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Children"></i>
+        <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Children"></i> -->
+        <label class="control-label">Child Count (${sessionScope.reservationDraft.countChildren})</label>
+        <%-- <input type="text" class="form-control input-numeric disabled" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" disabled="disabled"/> --%>               
       </div>        
     </form>
   </div>
-
-  <ol class="breadcrumb">
+  
+  <ol class="breadcrumb" id="stepsPanel">
     <li><button class="btn btn-default <c:if test="${CURRENT_SUBMODULE == 'step1'}">booking-tab-active</c:if>" type="button"><span class="badge">1</span> Select Room</button><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
     <li><button class="btn btn-default <c:if test="${CURRENT_SUBMODULE == 'step2'}">booking-tab-active</c:if>" type="button"><span class="badge">2</span> Payment Details</button><i class="fa fa-chevron-right bc-separator" aria-hidden="true"></i></li>
     <li><button class="btn btn-default <c:if test="${CURRENT_SUBMODULE == 'step3'}">booking-tab-active</c:if>" type="button"><span class="badge">3</span> Confirmation</button></li>        
@@ -102,20 +106,37 @@
           </div>          
         </div>
       </div>
-      <div class="container checkin-panel-booking mar-t-20">
+      <div class="container">
         <h4>Payment Method</h4>
+      </div>      
+      <div class="container checkin-panel-booking mar-t-20">        
         <div class="form-horizontal mar-t-20">
           <div class="form-group row">
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
             <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT" checked> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
             <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="PAYPAL"> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+            <div class="col-md-6">
+              <span class="pull-right text-right">
+                Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
+                <br>
+                x
+                <br>
+                Night(s) = ${numOfNights}
+                <br>
+                <hr>
+                Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
+                <br>
+                <hr>
+                Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+              </span>
+            </div>
           </div>     
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <div class="col-md-3"></div>
             <div class="col-md-5">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
@@ -134,15 +155,21 @@
           <span class="pull-right text-right">
             Booking Reference
             <br>
-            <span id="bookingRefNumber">HBXYZ1</span>
+            <span id="bookingRefNumber">${reservationSubmitted.referenceId}</span>
             <br>
             Status
             <br>
-            <span id="bookingStatus">CONFIRMED</span>
+            <span id="bookingStatus">${reservationSubmitted.status}</span>
             <br>
-            Total Amount
+            Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
             <br>
-            <span id="bookingTotal">&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationSubmitted.totalAmount}" /></span>
+            x
+            <br>
+            Night(s) = ${numOfNights}
+            <br>
+            Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
+            <br>
+            Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
           </span>
         </div>
       </div>         
@@ -184,7 +211,7 @@
       </div>
     </div>
     <div class="col-md-12" style="margin-bottom:80px;">
-      <button class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
+      <button class="btn btn-primary pull-right mar-t-20 hidden-print" style="margin-right:-15px;" id="btnPrintBooking">Print Confirmation <i class="fa fa-print" aria-hidden="true"></i></button>
     </div>
   </div>
   

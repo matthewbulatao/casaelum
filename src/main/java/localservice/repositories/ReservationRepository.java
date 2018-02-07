@@ -13,4 +13,6 @@ public interface ReservationRepository extends CrudRepository<Reservation, Integ
 
 	@Query("select r from Reservation r where r.checkIn=?#{[0]}")
 	public List<Reservation> findAllByCheckIn(Date checkIn);
+	
+	public Reservation findOneByReferenceId(String referenceId);
 }

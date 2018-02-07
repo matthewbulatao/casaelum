@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import localservice.models.BookingStatus;
 import localservice.models.Guest;
 import localservice.models.Reservation;
 import localservice.models.Room;
@@ -52,19 +53,28 @@ public class BookingController extends BaseController {
 		setModuleInSession(request, "booking", "step2");
 		List<Room> selectedRooms = roomService.findByIds(Arrays.asList(reservationForm.getSelectedRoomIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
 		reservationForm.setRooms(selectedRooms);
+		double totalAmount = reservationService.computeBooking(reservationForm);
+		reservationForm.setTotalAmount(totalAmount);
+		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(selectedRooms));	
+		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationForm));
+		request.getSession().setAttribute("dpAmount", reservationService.getDownPaymentAmount(totalAmount));
 		request.getSession().setAttribute("reservationDraft", reservationForm);		
 		return "booking";
 	}
 	
 	@PostMapping("/booking-step3")
 	public String bookingStep3(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
-		setModuleInSession(request, "booking", "step3");
-		//TODO save additional info about reservation
+		setModuleInSession(request, "booking", "step3");		
 		Reservation reservationDraftInSession = (Reservation) request.getSession().getAttribute("reservationDraft");
+		
+		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(reservationDraftInSession.getRooms()));	
+		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationDraftInSession));
+		request.getSession().setAttribute("dpAmount", reservationService.getDownPaymentAmount(reservationDraftInSession.getTotalAmount()));
+		
+		reservationDraftInSession.setReferenceId(reservationService.generateReferenceId());
 		reservationDraftInSession.setPaymentMethod(reservationForm.getPaymentMethod());
-		reservationDraftInSession.setMainGuest(saveGuest(reservationForm));		
-		reservationDraftInSession.setTotalAmount(reservationService.computeBooking(reservationDraftInSession));
-		reservationDraftInSession.setStatus("PENDING"); //TODO make it dynamic
+		reservationDraftInSession.setMainGuest(saveGuest(reservationForm));
+		reservationDraftInSession.setStatus(BookingStatus.CONFIRMED.toString());
 		Reservation reservationSubmitted = reservationService.saveOrUpdate(reservationDraftInSession);
 		request.setAttribute("reservationSubmitted", reservationSubmitted);	
 		return "booking";

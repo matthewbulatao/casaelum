@@ -31,13 +31,16 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse hidden-print" id="navbarResponsive">
           <ul class="navbar-nav ml-auto" id="mainMenuNav">
             <li class="nav-item <c:if test="${CURRENT_MODULE == null || CURRENT_MODULE == ''}">active</c:if>">
               <a class="nav-link" href="admin">Dashboard</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reservations'}">active</c:if>">
               <a class="nav-link" href="admin-reservations">Reservations</a>
+            </li>
+            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_manage_booking'}">active</c:if>">
+              <a class="nav-link" href="admin-manage-booking">Manage Booking</a>
             </li>
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_rooms'}">active</c:if>">
               <a class="nav-link" href="admin-rooms">Rooms</a>

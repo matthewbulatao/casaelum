@@ -1,5 +1,9 @@
 package localservice.controllers;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import localservice.models.ApplicationProperties;
 import localservice.models.Miscellaneous;
+import localservice.models.Reservation;
 import localservice.models.Room;
 import localservice.models.RoomType;
 import localservice.services.ApplicationPropertiesService;
@@ -40,6 +45,31 @@ public class AdminController extends BaseController {
 		return "admin";
 	}
 	
+	@GetMapping("/admin-manage-booking")
+	public String adminManageBooking(HttpServletRequest request) {
+		setModuleInSession(request, "admin_manage_booking", null);
+		return "admin-manage-booking";
+	}
+	
+	@GetMapping("/admin-manage-booking-retrieve")
+	public String adminManageBookingRetrieve(@RequestParam String referenceId, HttpServletRequest request) {
+		Reservation reservation = reservationService.findOneByReferenceId(referenceId.trim());
+		request.setAttribute("miscellaneousList", miscellaneousService.findAll());
+		request.setAttribute("savedBooking", reservation);
+		return "admin-manage-booking";
+	}
+	
+	@PostMapping("/admin-manage-booking-save")
+	public String adminManageBookingSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+		Reservation reservation = reservationService.findOneByReferenceId(reservationForm.getReferenceId().trim());
+		List<Miscellaneous> amenities = miscellaneousService.findByIds(Arrays.asList(reservationForm.getSelectedAmenitiesIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
+		reservation.setAmenities(amenities);
+		reservation.setExtraChargeDescription(reservationForm.getExtraChargeDescription());
+		reservation.setExtraChargeAmount(reservationForm.getExtraChargeAmount());
+		reservationService.saveOrUpdate(reservation);
+		return "redirect:admin-manage-booking";
+	}
+	
 	@GetMapping("/admin-room-types")
 	public String adminRoomTypes(HttpServletRequest request) {
 		request.setAttribute("roomTypeList", roomTypeService.findAll());
@@ -54,14 +84,14 @@ public class AdminController extends BaseController {
 	}
 	
 	@PostMapping("/admin-room-types-save")
-	public String adminRoomTypeSave(@ModelAttribute RoomType roomTypeForm, HttpServletRequest request) {
+	public String adminRoomTypeSave(@ModelAttribute RoomType roomTypeForm, BindingResult bindingResult, HttpServletRequest request) {
 		roomTypeService.saveOrUpdate(roomTypeForm);
 		request.setAttribute("roomTypeList", roomTypeService.findAll());
 		return "redirect:admin-room-types";
 	}
 	
 	@PostMapping("/admin-room-types-delete")
-	public String adminRoomTypeDelete(@ModelAttribute RoomType roomTypeForm, HttpServletRequest request) {
+	public String adminRoomTypeDelete(@ModelAttribute RoomType roomTypeForm, BindingResult bindingResult, HttpServletRequest request) {
 		RoomType roomType = roomTypeService.findById(roomTypeForm.getId());
 		roomTypeService.delete(roomType);
 		request.setAttribute("roomTypeList", roomTypeService.findAll());

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -29,9 +31,17 @@ public class Reservation implements Serializable {
 	private String status;	
 	private String remarks;
 	private double totalAmount;
+	@ManyToMany
+	private List<Miscellaneous> amenities;
+	@ManyToOne
+	private Guest mainGuest;
+	private String extraChargeDescription;
+	private double extraChargeAmount;
 	
 	@Transient
 	private String[] selectedRoomIds;
+	@Transient
+	private String[] selectedAmenitiesIds;
 	@Transient
 	private List<Room> rooms;
 	@Transient
@@ -45,9 +55,7 @@ public class Reservation implements Serializable {
 	@Transient
 	private String email;
 	@Transient
-	private String paymentMethod;
-	@Transient
-	private Guest mainGuest;
+	private String paymentMethod;	
 	
 	public int getId() {
 		return id;
@@ -162,6 +170,30 @@ public class Reservation implements Serializable {
 	}
 	public void setMainGuest(Guest mainGuest) {
 		this.mainGuest = mainGuest;
+	}	
+	public List<Miscellaneous> getAmenities() {
+		return amenities;
+	}
+	public void setAmenities(List<Miscellaneous> amenities) {
+		this.amenities = amenities;
+	}
+	public String getExtraChargeDescription() {
+		return extraChargeDescription;
+	}
+	public void setExtraChargeDescription(String extraChargeDescription) {
+		this.extraChargeDescription = extraChargeDescription;
+	}
+	public double getExtraChargeAmount() {
+		return extraChargeAmount;
+	}
+	public void setExtraChargeAmount(double extraChargeAmount) {
+		this.extraChargeAmount = extraChargeAmount;
+	}
+	public String[] getSelectedAmenitiesIds() {
+		return selectedAmenitiesIds;
+	}
+	public void setSelectedAmenitiesIds(String[] selectedAmenitiesIds) {
+		this.selectedAmenitiesIds = selectedAmenitiesIds;
 	}
 	@Override
 	public int hashCode() {

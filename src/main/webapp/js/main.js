@@ -26,6 +26,20 @@ $(document).ready(function() {
     	//return false;
     	//showMessage('warning','this is a warning');
     });    
+    $('#btnPrintBooking').click(function(){
+    	$('#stepsPanel').hide();
+    	$(this).hide();
+    	
+    	window.print();
+    	
+    	$('#stepsPanel').show();
+    	$(this).show();
+    });
+    $('#btnPrintReservations').click(function(){
+    	$(this).hide();    	
+    	window.print();
+    	$(this).show();
+    });
     
     $('div#myCarousel').carousel();
     $('table').excelTableFilter({
