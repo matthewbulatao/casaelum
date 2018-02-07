@@ -2,7 +2,7 @@
 
 <div class="container mar-t-20">
   <h4>Manage Booking</h4>
-  <form action="admin-manage-booking-save" method="POST">
+  <!-- <form action="admin-manage-booking-save" method="POST"> -->
     <div class="container row">
       <form class="form-horizontal col-md-12" action="admin-manage-booking-retrieve" method="GET">
         <div class="form-group row col-md-12">        
@@ -102,9 +102,9 @@
         <button type="submit" class="btn btn-primary">Checkout <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
       </form>     
       <button class="btn btn-primary mar-l-10" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button>  
-      <button class="btn btn-primary mar-l-10" type="submit">Save changes <i class="fa-floppy-o" aria-hidden="true"></i></button>
+      <button class="btn btn-primary mar-l-10">Save changes <i class="fa-floppy-o" aria-hidden="true"></i></button>
     </div>
-  </form>
+  <!-- </form> -->
   
 </div>
 
