@@ -55,10 +55,5 @@
           </ul>
         </div>
       </div>
-    </nav>
-    
-    <div class="alert alert-success invisible"></div>
-    <div class="alert alert-info invisible"></div>
-    <div class="alert alert-warning invisible"></div>
-    <div class="alert alert-danger invisible"></div>    
+    </nav>     
     

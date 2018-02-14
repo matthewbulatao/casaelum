@@ -18,6 +18,7 @@ import localservice.models.BookingStatus;
 import localservice.models.Guest;
 import localservice.models.Reservation;
 import localservice.models.Room;
+import localservice.services.ApplicationPropertiesService;
 import localservice.services.GuestService;
 import localservice.services.ReservationService;
 import localservice.services.RoomService;
@@ -33,6 +34,9 @@ public class BookingController extends BaseController {
 	
 	@Autowired
 	private ReservationService reservationService;
+	
+	@Autowired
+	private ApplicationPropertiesService applicationPropertiesService;
 	
 	@GetMapping("/booking-step1")
 	public String bookingFromMenu(HttpServletRequest request) {
@@ -58,6 +62,7 @@ public class BookingController extends BaseController {
 		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(selectedRooms));	
 		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationForm));
 		request.getSession().setAttribute("dpAmount", reservationService.getDownPaymentAmount(totalAmount));
+		request.getSession().setAttribute("dpRate", applicationPropertiesService.findLatestConfig().getDownPaymentPercentage());
 		request.getSession().setAttribute("reservationDraft", reservationForm);		
 		return "booking";
 	}
@@ -70,6 +75,7 @@ public class BookingController extends BaseController {
 		request.getSession().setAttribute("sumOfRoomRate", reservationService.getSumOfRoomRate(reservationDraftInSession.getRooms()));	
 		request.getSession().setAttribute("numOfNights", reservationService.getNumOfNights(reservationDraftInSession));
 		request.getSession().setAttribute("dpAmount", reservationService.getDownPaymentAmount(reservationDraftInSession.getTotalAmount()));
+		request.getSession().setAttribute("dpRate", applicationPropertiesService.findLatestConfig().getDownPaymentPercentage());
 		
 		reservationDraftInSession.setReferenceId(reservationService.generateReferenceId());
 		reservationDraftInSession.setPaymentMethod(reservationForm.getPaymentMethod());

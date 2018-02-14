@@ -5,24 +5,24 @@
     <form class="row">            
       <div class="col-md-3 inner-addon right-addon">
         <!-- <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i> -->
-        <label class="control-label">Check-In (<fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkIn}"/>)</label>
+        <label class="control-label">Check-In (<b><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkIn}"/></b>)</label>
         <%-- <input type="text" class="form-control datepicker disabled" placeholder="Check-in" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkIn}"/>" disabled="disabled"/> --%>              
       </div>   
       <div class="col-md-3 inner-addon right-addon">
         <!-- <i class="fa fa-calendar icon-calendar" aria-hidden="true"></i> -->
-        <label class="control-label">Check-Out (<fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkOut}"/>)</label>
+        <label class="control-label">Check-Out (<b><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${sessionScope.reservationDraft.checkOut}"/></b>)</label>
         <%-- <input type="text" class="form-control datepicker disabled" placeholder="Check-out" value="<fmt:formatDate pattern="M/d/yyyy" value="${sessionScope.reservationDraft.checkOut}"/>" disabled="disabled"/> --%>               
       </div>         
       <div class="col-md-3 inner-addon right-addon">
         <!-- <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Adult"></i>
         <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Adult"></i> -->
-        <label class="control-label">Adult Count (${sessionScope.reservationDraft.countAdult})</label>
+        <label class="control-label">Adult Count (<b>${sessionScope.reservationDraft.countAdult}</b>)</label>
         <%-- <input type="text" class="form-control input-numeric disabled" placeholder="Adult" name="countAdult" value="${sessionScope.reservationDraft.countAdult}" disabled="disabled"/> --%>               
       </div>
       <div class="col-md-3 inner-addon right-addon">
         <!-- <i class="fa fa-plus-circle fa-second" aria-hidden="true" id="iconMath_add_Children"></i>
         <i class="fa fa-minus-circle" aria-hidden="true" id="iconMath_minus_Children"></i> -->
-        <label class="control-label">Child Count (${sessionScope.reservationDraft.countChildren})</label>
+        <label class="control-label">Child Count (<b>${sessionScope.reservationDraft.countChildren}</b>)</label>
         <%-- <input type="text" class="form-control input-numeric disabled" placeholder="Child" name="countChildren" value="${sessionScope.reservationDraft.countChildren}" disabled="disabled"/> --%>               
       </div>        
     </form>
@@ -43,16 +43,15 @@
         <c:forEach var="room" items="${availableRooms}">
           <div class="list-group-item">
             <div class="media">
-              <div class="media-left">
+              <!-- <div class="media-left">
                 <a href="#">
                   <img src="http://placehold.it/180x150" alt="" class="media-object">
                 </a>
-              </div>
+              </div> -->
               <div class="media-body mar-l-20">
                 <h4 class="media-heading">${room.name}</h4>
                 <p>${room.type}</p>
-                <p>${room.description}</p>
-                <a href="#">See more details...</a>
+                <p>${room.description}</p>                
               </div>
               <div class="media-right mar-l-20">
                 <h4>&#8369; <fmt:formatNumber type="number" pattern="#,###" value="${room.rate}" /></h4>
@@ -63,7 +62,7 @@
         </c:forEach>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;" id="btnProceedToPayment">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
       </div>
     </form>    
   </div>
@@ -112,9 +111,14 @@
       <div class="container checkin-panel-booking mar-t-20">        
         <div class="form-horizontal mar-t-20">
           <div class="form-group row">
+            <!-- 
             <div class="col-md-2"></div>
             <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT" checked> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
             <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="PAYPAL"> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+            -->
+            <div class="col-md-6">
+              <div id="paypal-button" class="pull-right"></div>
+            </div>
             <div class="col-md-6">
               <span class="pull-right text-right">
                 Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
@@ -127,7 +131,7 @@
                 Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
                 <br>
                 <hr>
-                Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+                Reservation (${dpRate}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
               </span>
             </div>
           </div>     
@@ -140,7 +144,7 @@
         </div>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;" id="btnProceedConfirm">Proceed to Confirmation <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
       </div>
     </form>    
   </div>
@@ -148,10 +152,48 @@
   <div id="confirmationTab" class="<c:if test="${CURRENT_SUBMODULE != 'step3'}">invisible</c:if>">
     <div class="container checkin-panel-booking">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <h4>Transaction Summary</h4>
+        </div>        
+      </div>    
+      <div class="row">
+        <div class="col-md-6 mar-t-20">
+          <div>
+            <span class="booking-summary-header">Schedule</span>
+            <table class="table table-responsive">
+              <tr>
+                <td class="booking-summary-field">Check-in Date</td>
+                <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationSubmitted.checkIn}" /></td>
+              </tr>
+              <tr>
+                <td class="booking-summary-field">Check-out Date</td>
+                <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationSubmitted.checkOut}" /></td>
+              </tr>
+            </table>
+          </div>
+          <div class="mar-t-20">
+            <span class="booking-summary-header">Guests</span>
+            <table class="table table-responsive">
+              <tr>
+                <td class="booking-summary-field">Main Guest</td>
+                <td>${reservationSubmitted.mainGuest.fullName}</td>
+              </tr>
+              <tr>
+                  <td class="booking-summary-field">Total Pax</td>
+                  <td>${reservationSubmitted.countAdult} adult(s), ${reservationSubmitted.countChildren} child(ren)</td>
+              </tr>                  
+            </table>
+          </div>
+          <div class="mar-t-20">
+            <span class="booking-summary-header">Reserved Room(s)</span>
+            <table class="table table-responsive">
+              <c:forEach var="room" items="${reservationSubmitted.rooms}">
+                <tr><td>${room.name}</td></tr> 
+              </c:forEach>                             
+            </table>
+          </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mar-t-20">
           <span class="pull-right text-right">
             Booking Reference
             <br>
@@ -169,44 +211,8 @@
             <br>
             Total Amount = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${reservationDraft.totalAmount}" />
             <br>
-            Reservation (20%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
+            Reservation (${dpRate}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
           </span>
-        </div>
-      </div>         
-      <div class="col-md-12" style="margin-top:-50px !important;">
-        <div>
-          <span class="booking-summary-header">Schedule</span>
-          <table class="table table-responsive">
-            <tr>
-              <td class="booking-summary-field">Check-in Date</td>
-              <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationSubmitted.checkIn}" /></td>
-            </tr>
-            <tr>
-              <td class="booking-summary-field">Check-out Date</td>
-              <td><fmt:formatDate type="date" dateStyle="long" timeStyle="long" value="${reservationSubmitted.checkOut}" /></td>
-            </tr>
-          </table>
-        </div>
-        <div class="mar-t-20">
-          <span class="booking-summary-header">Guests</span>
-          <table class="table table-responsive">
-            <tr>
-              <td class="booking-summary-field">Main Guest</td>
-              <td>${reservationSubmitted.mainGuest.fullName}</td>
-            </tr>
-            <tr>
-                <td class="booking-summary-field">Total Pax</td>
-                <td>${reservationSubmitted.countAdult} adult(s), ${reservationSubmitted.countChildren} child(ren)</td>
-            </tr>                  
-          </table>
-        </div>
-        <div class="mar-t-20">
-          <span class="booking-summary-header">Reserved Room(s)</span>
-          <table class="table table-responsive">
-            <c:forEach var="room" items="${reservationSubmitted.rooms}">
-              <tr><td>${room.name}</td></tr> 
-            </c:forEach>                             
-          </table>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri ="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,21 +43,23 @@
             <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_manage_booking'}">active</c:if>">
               <a class="nav-link" href="admin-manage-booking">Manage Booking</a>
             </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_rooms'}">active</c:if>">
-              <a class="nav-link" href="admin-rooms">Rooms</a>
-            </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_amenities'}">active</c:if>">
-              <a class="nav-link" href="admin-amenities">Amenities</a>
-            </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_profiles'}">active</c:if>">
-              <a class="nav-link" href="admin-profiles">Profiles</a>
-            </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reports'}">active</c:if>">
-              <a class="nav-link" href="admin-reports">Reports</a>
-            </li>
-            <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_config'}">active</c:if>">
-              <a class="nav-link" href="admin-config">Config</a>
-            </li>
+            <sec:authorize access="hasRole('ADMIN')">
+              <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_rooms'}">active</c:if>">
+                <a class="nav-link" href="admin-rooms">Rooms</a>
+              </li>
+              <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_amenities'}">active</c:if>">
+                <a class="nav-link" href="admin-amenities">Amenities</a>
+              </li>
+              <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_profiles'}">active</c:if>">
+                <a class="nav-link" href="admin-profiles">Profiles</a>
+              </li>
+              <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_reports'}">active</c:if>">
+                <a class="nav-link" href="admin-reports">Reports</a>
+              </li>
+              <li class="nav-item <c:if test="${CURRENT_MODULE == 'admin_config'}">active</c:if>">
+                <a class="nav-link" href="admin-config">Config</a>
+              </li>
+            </sec:authorize>
             <li class="divider" role="separator"></li>
             <li class="dropdown mar-l-10" style="margin-top:5px;font-size:20px;">
                 <a href="#" data-toggle="dropdown"><i class="fa fa-user-circle"></i></a>

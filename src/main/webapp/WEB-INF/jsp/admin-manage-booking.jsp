@@ -102,7 +102,7 @@
         <button type="submit" class="btn btn-primary">Checkout <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
       </form>     
       <button class="btn btn-primary mar-l-10" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button>  
-      <button class="btn btn-primary mar-l-10">Save changes <i class="fa-floppy-o" aria-hidden="true"></i></button>
+      <button class="btn btn-primary mar-l-10">Save changes <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
     </div>
   <!-- </form> -->
   

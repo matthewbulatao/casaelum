@@ -1,9 +1,14 @@
 <%@include file="header-admin.jsp" %>
 
   <div class="container generic-panel mar-t-20 pad-b-30">
-    <h4>Reservations</h4>
-    <div class="container col-md-12">
-      <button class="btn btn-primary pull-right" style="margin-right:-15px;" id="btnPrintReservations">Print <i class="fa fa-print" aria-hidden="true"></i></button>
+    <div class="row mar-b-20">
+      <div class="col-md-6">
+        <h4>Reservations</h4>
+      </div>
+      <div class="col-md-6 text-right">
+        <button class="btn btn-primary mar-r-10" id="btnPrintReservations">Print <i class="fa fa-print" aria-hidden="true"></i></button>
+        <a href="admin-reservations" class="btn btn-primary">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></a>
+      </div>
     </div>
     <table class="table table-striped">
       <thead>

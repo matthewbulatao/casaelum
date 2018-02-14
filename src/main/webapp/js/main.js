@@ -1,6 +1,13 @@
-function showMessage(type,message){
-	$('div.alert-'+type).text(message);
-	$('div.alert-'+type).show();
+function showMessage(_type,_message){
+	$.notify(_message, {
+		type: _type,
+		placement: {
+			align: 'center'
+		},
+		offset: {
+			y: 60
+		}
+	});
 }
 
 $(document).ready(function() {
@@ -23,9 +30,44 @@ $(document).ready(function() {
     	startDate: new Date()
     });
     $('#submitButtonFromHome').click(function(){
-    	//return false;
-    	//showMessage('warning','this is a warning');
-    });    
+    	if($('input[name=checkIn]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify CHECK-IN date');
+    		return false;
+    	}
+    	if($('input[name=checkOut]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify CHECK-OUT date');
+    		return false;
+    	}
+    	var countAdult = $('input[name=countAdult]').val();
+    	if(countAdult=="" || parseInt(countAdult)==0){
+    		showMessage('danger','<strong>Sorry</strong>, please specify atleast 1 adult');
+    		return false;
+    	}
+    });   
+    $('#btnProceedToPayment').click(function(){
+    	if($('input[name=selectedRoomIds]:checked').length == 0){
+    		showMessage('danger','<strong>Sorry</strong>, please select atleast 1 room');
+    		return false;
+    	}
+    });
+    $('#btnProceedConfirm').click(function(){
+    	if($('input[name=email]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify your Email');
+    		return false;
+    	}
+    	if($('input[name=firstName]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify your first name');
+    		return false;
+    	}
+    	if($('input[name=lastName]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify your last name');
+    		return false;
+    	}
+    	if($('input[name=contactNumber]').val()==""){
+    		showMessage('danger','<strong>Sorry</strong>, please specify your contact number');
+    		return false;
+    	}
+    });
     $('#btnPrintBooking').click(function(){
     	$('#stepsPanel').hide();
     	$(this).hide();
@@ -36,14 +78,45 @@ $(document).ready(function() {
     	$(this).show();
     });
     $('#btnPrintReservations').click(function(){
-    	$(this).hide();    	
+    	$(this).hide(); 
+    	$('.dropdown-filter-icon').hide();
     	window.print();
     	$(this).show();
+    	$('.dropdown-filter-icon').show();
     });
     
     $('div#myCarousel').carousel();
     $('table').excelTableFilter({
     	columnSelector: '.apply-filter'
     });
-
+    
+    paypal.Button.render({
+        env: 'sandbox', // Or 'production',
+        commit: true, // Show a 'Pay Now' button
+        style: {
+          color: 'gold',
+          size: 'small'
+        },
+        payment: function(data, actions) {
+          /* 
+           * Set up the payment here 
+           */
+        },
+        onAuthorize: function(data, actions) {
+          /* 
+           * Execute the payment here 
+           */
+        },
+        onCancel: function(data, actions) {
+          /* 
+           * Buyer cancelled the payment 
+           */
+        },
+        onError: function(err) {
+          /* 
+           * An error occurred during the transaction 
+           */
+        }
+      }, '#paypal-button');
+    
 });

@@ -2,54 +2,26 @@
       
   <div class="container generic-panel mar-t-20 pad-b-30">
     <h4>Our Gallery</h4>
-    <center>
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <center>
+      <div class="container mar-b-50">
+        <iframe width="665" height="380" src="https://www.youtube.com/embed/tLUu-o0-LmI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>   
+      <hr>   
+      <div id="myCarousel" class="carousel slide mar-b-50 mar-t-20" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-          <li data-target="#myCarousel" data-slide-to="3"></li>
-          <li data-target="#myCarousel" data-slide-to="4"></li>
+          <c:forEach var="carImg" items="${carouselImages}" varStatus="loop">
+            <li data-target="#myCarousel" data-slide-to="${loop.index}" class="${loop.index == 0 ? 'active' : ''}"></li>            
+          </c:forEach>          
         </ol>
       
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="../../images/1.jpg" class="d-block w-100">
-            <div class="carousel-caption">
-              <h3>Image Name</h3>
-              <p>Caption</p>
-            </div>
-          </div>  
-          <div class="carousel-item">
-            <img src="../../images/2.jpg" class="d-block w-100">
-            <div class="carousel-caption">
-              <h3>Image Name</h3>
-              <p>Caption</p>
-            </div>
-          </div>  
-          <div class="carousel-item">
-            <img src="../../images/3.jpg" class="d-block w-100">
-            <div class="carousel-caption">
-              <h3>Image Name</h3>
-              <p>Caption</p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="../../images/4.jpg" class="d-block w-100">
-            <div class="carousel-caption">
-              <h3>Image Name</h3>
-              <p>Caption</p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="../../images/5.jpg" class="d-block w-100">
-            <div class="carousel-caption">
-              <h3>Image Name</h3>
-              <p>Caption</p>
-            </div>
-          </div>
+          <c:forEach var="carImg" items="${carouselImages}" varStatus="loop">
+            <div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
+              <img src="../../images/carousel/${carImg}" class="d-block w-100">
+            </div>  
+          </c:forEach>          
         </div>
       
         <!-- Left and right controls -->
@@ -62,7 +34,13 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-    </center>    
+      <hr>
+      <div class="container mar-t-20 mar-b-50">
+        <c:forEach var="galImg" items="${galleryImages}">
+          <img src="../../images/gallery/${galImg}" class="img-thumbnail" style="width:320px;height:220px;margin:10px;">
+        </c:forEach>
+      </div> 
+    </center>             
   </div>  
 
 <%@include file="footer.jsp" %>

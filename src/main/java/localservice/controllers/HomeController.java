@@ -1,5 +1,10 @@
 package localservice.controllers;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +52,10 @@ public class HomeController extends BaseController {
 	@GetMapping("/gallery")
 	public String gallery(HttpServletRequest request) {
 		String page = "gallery";
+		List<String> carouselImages = getFileList("../../images/carousel");
+		List<String> galleryImages = getFileList("../../images/gallery");
+		request.setAttribute("carouselImages", carouselImages);
+		request.setAttribute("galleryImages", galleryImages);
 		setModuleInSession(request, page, null);
 		return page;
 	}
@@ -63,6 +72,19 @@ public class HomeController extends BaseController {
 		String page = "contact";
 		setModuleInSession(request, page, null);
 		return page;
+	}
+	
+	private List<String> getFileList(String directory){
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		URL url = loader.getResource(directory);
+		String path = url.getPath();
+		File folder = new File(path);
+		File[] files = folder.listFiles();
+		List<String> fileName = new ArrayList<>();
+		for(File file : files) {
+			fileName.add(file.getName());
+		}
+		return fileName;
 	}
 	
 }

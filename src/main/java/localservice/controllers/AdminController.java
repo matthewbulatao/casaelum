@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import localservice.models.ApplicationProperties;
 import localservice.models.Miscellaneous;
 import localservice.models.Reservation;
+import localservice.models.Role;
 import localservice.models.Room;
 import localservice.models.RoomType;
+import localservice.models.User;
 import localservice.services.ApplicationPropertiesService;
 import localservice.services.MiscellaneousService;
 import localservice.services.ReservationService;
+import localservice.services.RoleService;
 import localservice.services.RoomService;
 import localservice.services.RoomTypeService;
+import localservice.services.UserService;
 
 @Controller
 public class AdminController extends BaseController {
@@ -38,6 +42,10 @@ public class AdminController extends BaseController {
 	private ApplicationPropertiesService applicationPropertiesService;
 	@Autowired
 	private ReservationService reservationService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private RoleService roleService;
 	
 	@GetMapping("/admin")
 	public String adminHome(HttpServletRequest request) {
@@ -190,4 +198,39 @@ public class AdminController extends BaseController {
 		return "admin-reservations";
 	}
 	
+	@GetMapping("/admin-profiles")
+	public String adminProfiles(HttpServletRequest request) {
+		request.setAttribute("roleList", roleService.findAll());
+		request.setAttribute("userList", userService.findAll());
+		setModuleInSession(request, "admin_profiles", null);
+		return "admin-profiles";
+	}
+	
+	@GetMapping("/admin-profiles-edit")
+	public String adminProfilesEdit(@RequestParam String id, HttpServletRequest request) {
+		User user = userService.findById(Integer.parseInt(id));
+		request.setAttribute("user", user);
+		request.setAttribute("roleList", roleService.findAll());
+		request.setAttribute("userList", userService.findAll());
+		return "admin-profiles";
+	}
+	
+	@PostMapping("/admin-profiles-save")
+	public String adminProfilesSave(@ModelAttribute User userForm, BindingResult bindingResult, HttpServletRequest request) {
+		List<Role> selectedRoles = roleService.findByIds(Arrays.asList(userForm.getSelectedRoleIds()).stream().map(Integer::parseInt).collect(Collectors.toList()));
+		userForm.setRoles(selectedRoles);
+		userService.saveOrUpdate(userForm);
+		request.setAttribute("roleList", roleService.findAll());
+		request.setAttribute("userList", userService.findAll());
+		return "redirect:admin-profiles";
+	}
+	
+	@PostMapping("/admin-profiles-delete")
+	public String adminProfilesDelete(@ModelAttribute User userForm, BindingResult bindingResult, HttpServletRequest request) {
+		User user = userService.findById(userForm.getId());
+		userService.delete(user);
+		request.setAttribute("roleList", roleService.findAll());
+		request.setAttribute("userList", userService.findAll());
+		return "redirect:admin-profiles";
+	}
 }
