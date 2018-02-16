@@ -205,6 +205,24 @@ public class AdminController extends BaseController {
 		return "admin-reservations";
 	}
 	
+	@GetMapping("/admin-reservations-edit")
+	public String adminReservationsEdit(@RequestParam String referenceId, HttpServletRequest request) {
+		Reservation resToEdit = reservationService.findOneByReferenceId(referenceId);
+		request.setAttribute("resToEdit", resToEdit);
+		request.setAttribute("reservationList", reservationService.findAll());
+		setModuleInSession(request, "admin_reservations", null);
+		return "admin-reservations";
+	}
+	
+	@PostMapping("/admin-reservations-save")
+	public String adminReservationsSave(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+		Reservation resToEdit = reservationService.findOneByReferenceId(reservationForm.getReferenceId());
+		resToEdit.setStatus(reservationForm.getStatus());		
+		reservationService.saveOrUpdate(resToEdit);
+		request.setAttribute("reservationList", reservationService.findAll());
+		return "redirect:admin-reservations";
+	}
+	
 	@GetMapping("/admin-reservations-today")
 	public String adminReservationsToday(HttpServletRequest request) {
 		request.setAttribute("reservationList", reservationService.findAllReservationsToday());

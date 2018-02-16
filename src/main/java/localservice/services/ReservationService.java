@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import localservice.models.BookingStatus;
 import localservice.models.Reservation;
 import localservice.models.Room;
 import localservice.repositories.ReservationRepository;
@@ -128,7 +129,15 @@ public class ReservationService extends BaseService<Reservation>{
 			sb.append("Booking Reference: " + reservation.getReferenceId() + "<br>");
 			sb.append("Status: " + reservation.getStatus() + "<br>");
 			sb.append("Total Amount: " + reservation.getTotalAmount() + "<br>");
-			sb.append("Down payment ("+ applicationPropertiesService.findLatestConfig().getDownPaymentPercentage() +"%): " + reservation.getDpAmount());
+			sb.append("Down payment ("+ applicationPropertiesService.findLatestConfig().getDownPaymentPercentage() +"%): " + reservation.getDpAmount() + "<br><br>");
+			
+			if(reservation.getStatus().equalsIgnoreCase(BookingStatus.PENDING.toString())) {
+				sb.append("<hr>");
+				sb.append("Please deposit the down payment within (48 hours)<br>");
+				sb.append("Bank: Banco De Oro (BDO)<br>");
+				sb.append("Savings Account: Casa Elum Pavilion and Resort<br>");
+				sb.append("Account Number: 001-92340-236");
+			}			
 			this.mailService.sendEmail(reservation.getMainGuest().getEmail(), null, "[TEST] Casa Elum Booking ["+ reservation.getReferenceId() +"]", sb.toString());
 		} catch (Exception e) {
 			logger.error(e);		

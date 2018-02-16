@@ -122,8 +122,8 @@
              
             <div class="col-md-6">
               <div class="col-md-12 row mar-b-20">
-                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT"> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
-                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="PAYPAL" checked> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT" checked> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="PAYPAL"> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
               </div>
               <hr>
               <div class="container">
