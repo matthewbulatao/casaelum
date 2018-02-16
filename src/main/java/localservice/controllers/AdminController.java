@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import localservice.models.ApplicationProperties;
+import localservice.models.BookingStatus;
 import localservice.models.Miscellaneous;
 import localservice.models.Reservation;
 import localservice.models.Role;
@@ -76,6 +77,19 @@ public class AdminController extends BaseController {
 		reservation.setExtraChargeAmount(reservationForm.getExtraChargeAmount());
 		reservationService.saveOrUpdate(reservation);
 		return "redirect:admin-manage-booking";
+	}
+	
+	@PostMapping("/admin-manage-booking-checkout")
+	public String adminManageBookingCheckout(@ModelAttribute Reservation reservationForm, BindingResult bindingResult, HttpServletRequest request) {
+		Reservation reservation = reservationService.findOneByReferenceId(reservationForm.getReferenceId().trim());
+		reservation.setStatus(BookingStatus.CHECKED_OUT.toString());
+		double balanceAmount = reservationService.computeBalanceForCheckout(reservation);
+		reservation.setBalanceUponCheckout(balanceAmount);
+		reservationService.saveOrUpdate(reservation);
+		request.setAttribute("balanceAmount", balanceAmount);
+		request.setAttribute("reservationCheckedOut", reservation);
+		reservationService.sendCheckoutEmail(reservation);
+		return "checkout-success";
 	}
 	
 	@GetMapping("/admin-room-types")
@@ -232,5 +246,6 @@ public class AdminController extends BaseController {
 		request.setAttribute("roleList", roleService.findAll());
 		request.setAttribute("userList", userService.findAll());
 		return "redirect:admin-profiles";
-	}
+	}	
+	
 }

@@ -51,24 +51,32 @@
               <div class="media-body mar-l-20">
                 <h4 class="media-heading">${room.name}</h4>
                 <p>${room.type}</p>
-                <p>${room.description}</p>                
+                <p>${room.description}</p>  
+                <c:if test="${room.conflicts != null}">
+                  <ul>
+                    <c:forEach var="conflict" items="${room.conflicts}">
+                      <li style="color:red;"><i>${conflict}</i></li>
+                    </c:forEach>
+                  </ul>
+                </c:if>              
               </div>
               <div class="media-right mar-l-20">
                 <h4>&#8369; <fmt:formatNumber type="number" pattern="#,###" value="${room.rate}" /></h4>
-                <label class="form-check-label"><input type="checkbox" class="form-check-input big-checkbox" name="selectedRoomIds" value="${room.id}" />&nbsp;Select Room</label>
+                <label class="form-check-label"><input type="checkbox" class="form-check-input big-checkbox ${room.conflicts != null ? 'disabled' : ''}" name="selectedRoomIds" value="${room.id}" ${room.conflicts != null ? 'disabled' : ''} />&nbsp;Select Room</label>
               </div>
             </div>
           </div>
         </c:forEach>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
-        <button type="submit" class="btn btn-primary pull-right mar-t-20" style="margin-right:-15px;" id="btnProceedToPayment">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary pull-right mar-t-20 mar-l-10" style="margin-right:-15px;" id="btnProceedToPayment">Proceed to Payment <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+        <a href="/" class="btn btn-primary pull-right mar-t-20 mar-r-10">Cancel <i class="fa fa-undo" aria-hidden="true"></i></a>
       </div>
     </form>    
   </div>
 
   <div id="paymentTab" class="<c:if test="${CURRENT_SUBMODULE != 'step2'}">invisible</c:if>">
-    <form action="booking-step3" method="POST">
+    <form action="booking-step3" method="POST" id="formPayment">
     
       <%@include file="hidden-booking-info.jsp" %>
           
@@ -111,14 +119,25 @@
       <div class="container checkin-panel-booking mar-t-20">        
         <div class="form-horizontal mar-t-20">
           <div class="form-group row">
-            <!-- 
-            <div class="col-md-2"></div>
-            <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT" checked> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
-            <label class="radio-inline col-md-2"><input type="radio" name="paymentMethod" value="PAYPAL"> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
-            -->
+             
             <div class="col-md-6">
-              <div id="paypal-button" class="pull-right"></div>
+              <div class="col-md-12 row mar-b-20">
+                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="BANK_DEPOSIT"> Bank Deposit <i class="fa fa-university" aria-hidden="true"></i></label>
+                <label class="radio-inline col-md-6"><input type="radio" name="paymentMethod" value="PAYPAL" checked> Paypal <i class="fa fa-paypal" aria-hidden="true"></i></label>
+              </div>
+              <hr>
+              <div class="container">
+                <span><b>For Bank Deposit</b>: Bank details and instructions will be sent to you by email, 
+                your reservation will be on PENDING status until your payment is confirmed
+                <br>
+                <b>For PayPal</b>: Your reservation will be CONFIRMED upon successful payment transaction
+                </span>
+              </div>              
             </div>
+            <!-- <div class="col-md-6">
+              <div id="paypal-button" class="pull-right"></div>
+            </div> -->
+            <input type="hidden" id="dpAmountForPaypal" value="${dpAmount}"/>
             <div class="col-md-6">
               <span class="pull-right text-right">
                 Room(s) Rate = &#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${sumOfRoomRate}" />
@@ -134,13 +153,7 @@
                 Reservation (${dpRate}%) = <b>&#8369; <fmt:formatNumber type="number" pattern="#,###.00" value="${dpAmount}" /></b>
               </span>
             </div>
-          </div>     
-          <!-- <div class="form-group row">
-            <div class="col-md-3"></div>
-            <div class="col-md-5">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </div>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="col-md-12" style="margin-bottom:80px;">
@@ -180,7 +193,7 @@
               </tr>
               <tr>
                   <td class="booking-summary-field">Total Pax</td>
-                  <td>${reservationSubmitted.countAdult} adult(s), ${reservationSubmitted.countChildren} child(ren)</td>
+                  <td>${reservationSubmitted.countAdult} ${reservationSubmitted.countAdult > 0 ? 'adults' : 'adult'}, ${reservationSubmitted.countChildren} ${reservationSubmitted.countChildren > 0 ? 'children' : 'child'}</td>
               </tr>                  
             </table>
           </div>

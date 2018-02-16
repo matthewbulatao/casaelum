@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,19 +32,21 @@ public class Reservation implements Serializable {
 	private String status;	
 	private String remarks;
 	private double totalAmount;
+	private double dpAmount;
 	@ManyToMany
 	private List<Miscellaneous> amenities;
 	@ManyToOne
 	private Guest mainGuest;
 	private String extraChargeDescription;
 	private double extraChargeAmount;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private List<Room> rooms;
+	private double balanceUponCheckout;
 	
 	@Transient
 	private String[] selectedRoomIds;
 	@Transient
 	private String[] selectedAmenitiesIds;
-	@Transient
-	private List<Room> rooms;
 	@Transient
 	private List<Miscellaneous> miscellaneousList;
 	@Transient
@@ -57,6 +60,13 @@ public class Reservation implements Serializable {
 	@Transient
 	private String paymentMethod;	
 	
+	
+	public double getBalanceUponCheckout() {
+		return balanceUponCheckout;
+	}
+	public void setBalanceUponCheckout(double balanceUponCheckout) {
+		this.balanceUponCheckout = balanceUponCheckout;
+	}
 	public int getId() {
 		return id;
 	}
@@ -194,6 +204,12 @@ public class Reservation implements Serializable {
 	}
 	public void setSelectedAmenitiesIds(String[] selectedAmenitiesIds) {
 		this.selectedAmenitiesIds = selectedAmenitiesIds;
+	}	
+	public double getDpAmount() {
+		return dpAmount;
+	}
+	public void setDpAmount(double dpAmount) {
+		this.dpAmount = dpAmount;
 	}
 	@Override
 	public int hashCode() {

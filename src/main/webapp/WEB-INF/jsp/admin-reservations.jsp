@@ -7,7 +7,7 @@
       </div>
       <div class="col-md-6 text-right">
         <button class="btn btn-primary mar-r-10" id="btnPrintReservations">Print <i class="fa fa-print" aria-hidden="true"></i></button>
-        <a href="admin-reservations" class="btn btn-primary">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></a>
+        <a href="admin-reservations" class="btn btn-primary" id="btnRefresh">Refresh <i class="fa fa-refresh" aria-hidden="true"></i></a>
       </div>
     </div>
     <table class="table table-striped">

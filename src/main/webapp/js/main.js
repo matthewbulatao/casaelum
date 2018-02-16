@@ -24,7 +24,12 @@ $(document).ready(function() {
     	if(confirm("Are you sure to delete?")){
     		$(this).closest('form').submit();
     	}
-    });    
+    });  
+    $('#btnCheckout').click(function(){
+    	if(confirm("Are you sure to checkout?")){
+    		$(this).closest('form').submit();
+    	}
+    });
     $('input.datepicker').datepicker({
     	format: 'm/d/yyyy',
     	startDate: new Date()
@@ -79,10 +84,12 @@ $(document).ready(function() {
     });
     $('#btnPrintReservations').click(function(){
     	$(this).hide(); 
+    	$('#btnRefresh').hide();
     	$('.dropdown-filter-icon').hide();
     	window.print();
     	$(this).show();
     	$('.dropdown-filter-icon').show();
+    	$('#btnRefresh').show();
     });
     
     $('div#myCarousel').carousel();
@@ -90,33 +97,42 @@ $(document).ready(function() {
     	columnSelector: '.apply-filter'
     });
     
-    paypal.Button.render({
+    /*paypal.Button.render({
         env: 'sandbox', // Or 'production',
         commit: true, // Show a 'Pay Now' button
         style: {
           color: 'gold',
           size: 'small'
         },
+        client: {
+        	sandbox: 'SCC3BHU38BZNS'
+        },
         payment: function(data, actions) {
-          /* 
-           * Set up the payment here 
-           */
+        	return actions.payment.create({
+                payment: {
+                    transactions: [
+                        {
+                            amount: { total: $('#dpAmountForPaypal').val(), currency: 'PHP' }
+                        }
+                    ]
+                }
+            });
         },
         onAuthorize: function(data, actions) {
-          /* 
-           * Execute the payment here 
-           */
+        	return actions.payment.execute().then(function(payment) {
+        		$('#formPayment').submit();
+            });
         },
         onCancel: function(data, actions) {
-          /* 
+           
            * Buyer cancelled the payment 
-           */
+           
         },
         onError: function(err) {
-          /* 
+           
            * An error occurred during the transaction 
-           */
+           
         }
-      }, '#paypal-button');
+      }, '#paypal-button');*/
     
 });

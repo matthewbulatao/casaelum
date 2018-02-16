@@ -1,11 +1,13 @@
 package localservice.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Room implements Serializable {
@@ -20,6 +22,9 @@ public class Room implements Serializable {
 	private double rate;
 	private String description;
 	private String status;
+	
+	@Transient
+	private List<String> conflicts;
 	
 	public Room() {}
 	
@@ -70,6 +75,14 @@ public class Room implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}	
+
+	public List<String> getConflicts() {
+		return conflicts;
+	}
+
+	public void setConflicts(List<String> conflicts) {
+		this.conflicts = conflicts;
 	}
 
 	@Override

@@ -42,11 +42,12 @@
     </div>
     
     <div id="accordion" role="tablist" class="<c:if test="${savedBooking == null}">invisible</c:if>">
-      <div class="card">
+      <%-- <div class="card">
         <div class="card-header" role="tab" id="headingOne"
           data-toggle="collapse" data-target="#collapseOne"
           data-parent="#accordion">
           <h5 class="mb-0">Add Amenities</h5>
+          
         </div>
         <div id="collapseOne" class="collapse" role="tabpanel"
           aria-labelledby="headingOne" data-parent="#accordion">
@@ -75,9 +76,9 @@
             </table>
           </div>
         </div>
-      </div>  
+      </div> --%>  
         
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-header" role="tab" id="headingTwo"
           data-toggle="collapse" data-target="#collapseTwo"
           data-parent="#accordion">
@@ -92,17 +93,17 @@
             <input type="text" class="form-control col-md-4" name="extraChargeAmount" />
           </div>
         </div>
-      </div>   
+      </div>   --> 
       
     </div>
     
     <div class="container mar-t-20 row <c:if test="${savedBooking == null}">invisible</c:if>">
-      <form action="admin-manage-booking-checkout" method="GET">
-        <input type="hidden" name="referenceIdForCheckout" value="${savedBooking.referenceId}" />
-        <button type="submit" class="btn btn-primary">Checkout <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
+      <form action="admin-manage-booking-checkout" method="POST">
+        <input type="hidden" name="referenceId" value="${savedBooking.referenceId}" />
+        <button type="submit" id="btnCheckout" class="btn btn-primary ${savedBooking.status == 'CONFIRMED' ? '' : 'disabled'}" ${savedBooking.status == 'CONFIRMED' ? '' : 'disabled'}>Checkout <i class="fa fa-credit-card-alt" aria-hidden="true"></i></button>
       </form>     
-      <button class="btn btn-primary mar-l-10" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button>  
-      <button class="btn btn-primary mar-l-10">Save changes <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+      <!-- <button class="btn btn-primary mar-l-10" id="btnPrintBooking">Print Summary <i class="fa fa-print" aria-hidden="true"></i></button> -->  
+      <!-- <button class="btn btn-primary mar-l-10">Save changes <i class="fa fa-floppy-o" aria-hidden="true"></i></button> -->
     </div>
   <!-- </form> -->
   

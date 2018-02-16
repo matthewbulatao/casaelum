@@ -14,5 +14,8 @@ public interface ReservationRepository extends CrudRepository<Reservation, Integ
 	@Query("select r from Reservation r where r.checkIn=?#{[0]}")
 	public List<Reservation> findAllByCheckIn(Date checkIn);
 	
+	@Query("select r from Reservation r where r.status in ('PENDING','CONFIRMED') and (r.checkIn between ?#{[0]} and ?#{[1]} or r.checkOut between ?#{[0]} and ?#{[1]})")
+	public List<Reservation> findAllByCheckInAndCheckOut(Date checkIn, Date checkOut);
+	
 	public Reservation findOneByReferenceId(String referenceId);
 }
