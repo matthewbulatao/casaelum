@@ -96,6 +96,26 @@ $(document).ready(function() {
     $('table').excelTableFilter({
     	columnSelector: '.apply-filter'
     });
+    $('#chkNotRobot').change(function(){
+    	if(this.checked){
+    		$('#btnSubmitMessage').removeClass('disabled');
+    		$('#btnSubmitMessage').removeAttr('disabled');
+    	}else{
+    		$('#btnSubmitMessage').addClass('disabled');
+    		$('#btnSubmitMessage').attr('disabled','disabled');
+    	}
+    });
+    $('#formContact input[name=fullName]').val('');
+    $('#formContact input[name=email]').val('');
+    $('#formContact input[name=contactNumber]').val('');
+    $('#formContact input[name=message]').val('');
+    $('#formContact input#chkNotRobot').attr('checked',false);
+    $('#formContact button#btnSubmitMessage').addClass('disabled');
+	$('#formContact button#btnSubmitMessage').attr('disabled','disabled');
+	
+	if($('#messageSent').val()){
+		showMessage('success','<strong>Thanks</strong>, your message has been sent successfully');
+	}
     
     /*paypal.Button.render({
         env: 'sandbox', // Or 'production',

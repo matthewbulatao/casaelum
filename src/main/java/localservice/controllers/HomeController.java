@@ -5,19 +5,29 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import localservice.models.ContactForm;
 import localservice.services.ApplicationPropertiesService;
+import localservice.services.MailService;
 import localservice.services.MiscellaneousService;
 import localservice.services.RoomService;
 
 @Controller
 public class HomeController extends BaseController {
+	
+	private final Log logger = LogFactory.getLog(getClass());
 	
 	@Autowired
 	private MiscellaneousService miscellaneousService;
@@ -25,6 +35,8 @@ public class HomeController extends BaseController {
 	private RoomService roomService;
 	@Autowired
 	private ApplicationPropertiesService applicationPropertiesService;
+	@Autowired
+	private MailService mailService;
 	
 	@GetMapping("/")
 	public String home(HttpServletRequest request) {
@@ -72,6 +84,22 @@ public class HomeController extends BaseController {
 		String page = "contact";
 		setModuleInSession(request, page, null);
 		return page;
+	}
+	
+	@PostMapping("/contact-submit")
+	public String contactSubmit(@ModelAttribute ContactForm contactForm, BindingResult bindingResult, HttpServletRequest request) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Dear Admin,<br><br>");
+		sb.append("Message from: " + contactForm.getFullName()+"<br>");
+		sb.append("Contact Number: " + contactForm.getContactNumber() + "<br><br><hr>");
+		sb.append(contactForm.getMessage());
+		try {
+			this.mailService.sendEmail("casaelum.webmailer@gmail.com", null, "[TEST] Casa Elum (Message From: "+ contactForm.getFullName() +")", sb.toString(), contactForm.getEmail());
+			request.setAttribute("messageSent", Boolean.TRUE);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return "contact";
 	}
 	
 	private List<String> getFileList(String directory){

@@ -28,12 +28,19 @@ public class MailService {
 	}
 	
 	public void sendEmail(String to, String cc, String subject, String body) throws AddressException, MessagingException {
+		this.sendEmail(to, cc, subject, body, null);
+	}
+	
+	public void sendEmail(String to, String cc, String subject, String body, String replyTo) throws AddressException, MessagingException {
 		this.init();
 		mailSession = Session.getDefaultInstance(mailServerProperties, null);
 		generatedMailMessage = new MimeMessage(mailSession);
 		generatedMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 		if(StringUtils.isNoneBlank(cc)) {
 			generatedMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
+		}		
+		if(StringUtils.isNoneBlank(replyTo)) {
+			generatedMailMessage.setReplyTo(new InternetAddress[] {(new InternetAddress(replyTo))});
 		}		
 		generatedMailMessage.setSubject(subject);
 		generatedMailMessage.setContent(body, "text/html");
